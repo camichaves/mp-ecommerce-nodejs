@@ -109,6 +109,7 @@ app.get('/feedback', function(req, res) {
 });
 
 app.get('/webhook', function(req, res) {
+	console.log("JSON WEBHOOK");
 	console.log(req.body);
 	res.status(200).json({req: req.body});
   });
