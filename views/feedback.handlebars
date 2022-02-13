@@ -1,86 +1,15 @@
-<script src="https://www.mercadopago.com/v2/security.js" view="item"></script>
 <script>
-    // Add SDK credentials
-// REPLACE WITH YOUR PUBLIC KEY AVAILABLE IN: https://developers.mercadopago.com/panel
-window.onload = function(){
-const mercadopago = new MercadoPago('PUBLIC_KEY', {
-    locale: 'es-AR' // The most common are: 'pt-BR', 'es-AR' and 'en-US'
-  });
-  
-  // Handle call to backend and generate preference.
-  document.getElementById("checkout-btn").addEventListener("click", function() {
-  
-    $('#checkout-btn').attr("disabled", true);
-    
-    const orderData = {
-        title: document.getElementById("title").value,
-      quantity: document.getElementById("quantity").value,
-      description: document.getElementById("description").value,
-      price: document.getElementById("unit-price").value,
-      picture_url:  document.getElementById("picture_url").value
-    };
-
-    const orderData1 = {
-      quantity: "1",
-      description: "des",
-      price: "1600"
+    window.onload = function(){
+        var status = document.getElementById("status").value;
+        console.log(status)
+        if(status == "approved"){
+        $('#estado').text("PAGO APROBADO");
+        }else if (status == "pending"){
+        $('#estado').text("PAGO PENDIENTE");
+        }else{
+        $('#estado').text("PAGO NO APROBADO");
+        }
     }
-      
-    fetch("/create_preference", {
-      method: "POST",
-      body: JSON.stringify(orderData),
-      headers: {
-          "Content-Type": "application/json",
-      },
-      
-    })
-      .then(function(response) {
-          response.json().then((data) => {
-              console.log(data)
-            //return response.json();
-            window.location.href = data.init_point;
-
-          })
-      })
-//      .then(function(preference) {
-//           console.log("preference: " + preference)
-//        return preference;   
-          
-//      })
-      .catch(function() {
-          console.log("errorcito")
-          alert("Unexpected error");
-          $('#checkout-btn').attr("disabled", false);
-      });
-  });
-  
-  // Create preference when click on checkout button
-  
-  
-  // Handle price update
-  function updatePrice() {
-    let quantity = document.getElementById("quantity").innerHTML;
-    let unitPrice = document.getElementById("unit-price").innerHTML;
-    let amount = parseInt(unitPrice) * parseInt(quantity);
-  
-  //  document.getElementById("cart-total").innerHTML = "$ " + amount;
-  //  document.getElementById("summary-price").innerHTML = "$ " + unitPrice;
-  //  document.getElementById("summary-quantity").innerHTML = quantity;
-   // document.getElementById("summary-total").innerHTML = "$ " + amount;
-  }
-  
-  document.getElementById("quantity").addEventListener("change", updatePrice);
-  updatePrice();  
-  
-  // Go back
-//  document.getElementById("go-back").addEventListener("click", function() {
- //   $(".container_payment").fadeOut(500);
-  //  setTimeout(() => {
-  //      $(".shopping-cart").show(500).fadeIn();
-  //  }, 500);
-  //  $('#checkout-btn').attr("disabled", false);  
- // });
-  }
 </script>
 <div class="as-search-wrapper" role="main">
     <div class="as-navtuck-wrapper">
@@ -160,18 +89,13 @@ const mercadopago = new MercadoPago('PUBLIC_KEY', {
 
                                     </h3>
                                 </div>
-                                <h3> Precio: {{ price }}</h3>
-                                <h3>Cantidad: {{ unit }}</h3>
-                                <h3>Dispositivo móvil de Tienda e-commerce </h3>
+                                <input type="hidden" id="status" value="{{ status }}">
+                                <h3 id="estado"></h3>
+                                <h3 id="unit-price" > PAYMENT ID: {{ payment_id }}</h3>
+                                <h3 id="quantity"> METODO DE PAGO: {{ payment_type }}</h3>
+                                <h3 id="product-description">EXTERNAL REFERENCE: {{external_reference}} </h3>
                             </div>
-                                <input type="hidden" id="title" value={{title}}>
-                                <input type="hidden" id="unit-price" value={{price}}>
-                                <input type="hidden" id="quantity" value={{unit}}>
-                                <input type="hidden" id="picture_url" value={{img}}>
-                                <input type="hidden" id="description" value="Dispositivo móvil de Tienda e-commerce">
-                                <button class="mercadopago-button" id="checkout-btn">Pagar la compra</button>
 
-                            {{!-- <button id="checkout-btn" type="submit" class="mercadopago-button" formmethod="post">Pagar</button> --}}
                         </div>
                     </div>
                 </div>
