@@ -40,7 +40,7 @@ app.post("/create_preference", (req, res) => {
 		items: [
 			{
 				id: "1234",
-				picture_url: req.body.picture_url,
+				picture_url: "https://camichaves-mp-commerce-nodejs.herokuapp.com" + req.body.picture_url.replace('.',''),
 				title: req.body.description,
 				unit_price: Number(req.body.price),
 				quantity: Number(req.body.quantity)
@@ -74,13 +74,16 @@ app.post("/create_preference", (req, res) => {
 					},
 				
 		back_urls: {
-			"success": "http://localhost:3000/feedback",
-			"failure": "http://localhost:3000/feedback",
-			"pending": "http://localhost:3000/feedback"
+			"success": "https://camichaves-mp-commerce-nodejs.herokuapp.com/feedback",
+			"failure": "https://camichaves-mp-commerce-nodejs.herokuapp.com/feedback",
+			"pending": "https://camichaves-mp-commerce-nodejs.herokuapp.com/feedback"
 		},
 		auto_return: "approved",
 		external_reference: "c.chaves@alumno.um.edu.ar",
+		notification_url: "https://camichaves-mp-commerce-nodejs.herokuapp.com/webhook"
 	};
+	// 		notification_url: "http://localhost:3000/webhook"
+
     console.log(preference)
 	mercadopago.preferences.create(preference)
 		.then(function (response) {
@@ -104,3 +107,8 @@ app.get('/feedback', function(req, res) {
 	// 	MerchantOrder: req.query.merchant_order_id
 	// });
 });
+
+app.get('/webhook', function(req, res) {
+	console.log(req.body);
+	res.status(200).json({req: req.body});
+  });
