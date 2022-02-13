@@ -2,9 +2,10 @@ var express = require('express');
 var exphbs  = require('express-handlebars');
 var port = process.env.PORT || 3000
 const cors = require("cors");
-// SDK de Mercado Pago
 const mercadopago = require("mercadopago");
 var app = express();
+ var url = "https://camichaves-mp-commerce-nodejs.herokuapp.com";
+// var url = "http://localhost:3000";
 
 // Agrega credenciales
 mercadopago.configure({
@@ -40,7 +41,7 @@ app.post("/create_preference", (req, res) => {
 		items: [
 			{
 				id: "1234",
-				picture_url: "https://camichaves-mp-commerce-nodejs.herokuapp.com" + req.body.picture_url.replace('.',''),
+				picture_url: url + req.body.picture_url.replace('.',''),
 				title: req.body.description,
 				unit_price: Number(req.body.price),
 				quantity: Number(req.body.quantity)
@@ -74,13 +75,13 @@ app.post("/create_preference", (req, res) => {
 					},
 				
 		back_urls: {
-			"success": "https://camichaves-mp-commerce-nodejs.herokuapp.com/feedback",
-			"failure": "https://camichaves-mp-commerce-nodejs.herokuapp.com/feedback",
-			"pending": "https://camichaves-mp-commerce-nodejs.herokuapp.com/feedback"
+			"success": url + "/feedback",
+			"failure": url + "/feedback",
+			"pending": url + "/feedback",
 		},
 		auto_return: "approved",
 		external_reference: "c.chaves@alumno.um.edu.ar",
-		notification_url: "https://camichaves-mp-commerce-nodejs.herokuapp.com/webhook"
+		notification_url: url + "/webhook"
 	};
 	// 		notification_url: "http://localhost:3000/webhook"
 
@@ -108,7 +109,7 @@ app.get('/feedback', function(req, res) {
 	// });
 });
 
-app.get('/webhook', function(req, res) {
+app.post('/webhook', function(req, res) {
 	console.log("JSON WEBHOOK");
 	console.log(req.body);
 	res.status(200).json({req: req.body});
