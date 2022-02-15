@@ -42,9 +42,10 @@ app.post("/create_preference", (req, res) => {
 			{
 				id: "1234",
 				picture_url: url + req.body.picture_url.replace('.',''),
-				title: req.body.description,
+				title: req.body.title,
 				unit_price: Number(req.body.price),
-				quantity: Number(req.body.quantity)
+				quantity: Number(req.body.quantity),
+				description: "Dispositivo móvil de Tienda e-commerce"
 			}],
 		payment_methods: {
 					"excluded_payment_methods": [
@@ -112,5 +113,7 @@ app.get('/feedback', function(req, res) {
 app.post('/webhook', function(req, res) {
 	console.log("JSON WEBHOOK:");
 	console.log(req.body);
+	console.log("JSON WEBHOOK stringify:");
+	console.log(JSON.stringify(req.body));
 	res.status(200).json({req: req.body});
   });

@@ -1,0 +1,47 @@
+{
+    "items": [
+        {
+            "id": "item-ID-1234", // idPlan
+            "title": "Mi producto", // $act.titulo ($plan.titulo) con $est.nombre
+            "currency_id": "ARS",
+            "picture_url": "https://www.mercadopago.com/org-img/MP3/home/logomp3.gif", //est.logo
+            "description": "Descripción del Item", // $act.titulo ($plan.titulo) con $est.nombre
+            "quantity": 1, // res.cantPersonas
+            "unit_price": 75.76 // $act.seña
+        }
+    ],
+    "payer": {
+        "name": "Juan", //p.nombre
+        "surname": "Lopez", // p.apellidos
+        "email": "user@email.com", // p.email
+        "phone": {},
+        "identification": { },
+        "address": { }
+    },
+    "back_urls": {
+        "success": "https://www.success.com", //endpoint reservaReadyPago 
+        "failure": "http://www.failure.com",  //endpoint reservaReadyPago 
+        "pending": "http://www.pending.com" //endpoint reservaReadyPago 
+    },
+    "auto_return": "approved",
+    "payment_methods": {
+        "excluded_payment_methods": [],
+        "excluded_payment_types": [
+            {
+                "id": "ticket"
+            }
+        ],
+        "installments": 1
+    },
+    "notification_url": "https://www.your-site.com/ipn", //endpoint webhooksMP
+    "statement_descriptor": "TuReservApp",
+    "external_reference": "c.chaves@alumno.um.edu.ar",
+    "marketplace": "TuReservApp",
+    "marketplace_fee": 3
+}
+
+// aaccess_token del negocio (est)
+
+// cuando hace el post reserva:
+// 1) Me fijo si esa actividad_id tiene check act.cobraSeña, si tiene me traigo los planes asociados, me fijo cual concide con planId que viene en el req
+// 2) Creo una preferencia (modelo arriba)
